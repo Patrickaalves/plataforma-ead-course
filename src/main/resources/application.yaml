@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: authuser
+    name: course
   datasource:
     url: jdbc:postgresql://localhost:5433/ead_course
     username: postgres
