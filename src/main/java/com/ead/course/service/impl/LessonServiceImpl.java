@@ -5,7 +5,7 @@ import com.ead.course.service.LessonService;
 
 public class LessonServiceImpl implements LessonService {
 
-    private final LessonRepository lessonRepository;
+    final LessonRepository lessonRepository;
 
     public LessonServiceImpl(LessonRepository lessonRepository) {
         this.lessonRepository = lessonRepository;
