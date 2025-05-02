@@ -1,15 +1,43 @@
 package com.ead.course.service.impl;
 
+import com.ead.course.model.CourseModel;
+import com.ead.course.model.LessonModel;
+import com.ead.course.model.ModuleModel;
 import com.ead.course.repositories.CourseRepository;
+import com.ead.course.repositories.LessonRepository;
+import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.service.CourseService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 
     final CourseRepository courseRepository;
+    final ModuleRepository moduleRepository;
+    final LessonRepository lessonRepository;
 
-    public CourseServiceImpl(CourseRepository courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, ModuleRepository moduleRepository, LessonRepository lessonRepository) {
         this.courseRepository = courseRepository;
+        this.moduleRepository = moduleRepository;
+        this.lessonRepository = lessonRepository;
+    }
+
+    @Transactional
+    @Override
+    public void delete(CourseModel courseModel) {
+        List<ModuleModel> moduleModelList = moduleRepository.findAllModulesIntoCourse(courseModel.getCourseId());
+        if(!moduleModelList.isEmpty()){
+            for (ModuleModel module : moduleModelList) {
+                List<LessonModel> lessonModelList = lessonRepository.findAllLessonsIntoModule(module.getModuleId());
+                if(!lessonModelList.isEmpty()){
+                    lessonRepository.deleteAll(lessonModelList);
+                }
+            }
+            moduleRepository.deleteAll(moduleModelList);
+        }
+        courseRepository.delete(courseModel);
     }
 }
