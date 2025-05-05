@@ -2,6 +2,7 @@ package com.ead.course.service;
 
 import com.ead.course.dtos.CourseRecordDto;
 import com.ead.course.model.CourseModel;
+import com.ead.course.model.ModuleModel;
 import jakarta.validation.Valid;
 
 import java.util.List;
