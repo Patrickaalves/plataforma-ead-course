@@ -38,7 +38,7 @@ public class ModuleController {
 
     @GetMapping("/courses/{courseId}/modules/{moduleId}")
     public ResponseEntity<ModuleModel> getAllModules(@PathVariable(value = "courseId") UUID courseId,
-                                                           @PathVariable(value = "moduleId") UUID moduleId) {
+                                                     @PathVariable(value = "moduleId") UUID moduleId) {
         return ResponseEntity.status(HttpStatus.OK)
                              .body(moduleService.findModuleIntoCourse(courseId, moduleId).get());
     }
@@ -55,7 +55,6 @@ public class ModuleController {
                                                @PathVariable(value = "moduleId") UUID moduleId,
                                                @RequestBody @Valid ModuleRecordDto moduleRecordDto) {
         return ResponseEntity.status(HttpStatus.OK)
-                             .body(moduleService.update(moduleRecordDto,
-                                                        moduleService.findModuleIntoCourse(courseId, moduleId).get()));
+                             .body(moduleService.update(moduleRecordDto, moduleService.findModuleIntoCourse(courseId, moduleId).get()));
     }
 }
