@@ -71,7 +71,7 @@ public class CourseServiceImpl implements CourseService {
     public Optional<CourseModel> findById(UUID id) {
         Optional<CourseModel> courseModelOptional = courseRepository.findById(id);
         if (courseModelOptional.isEmpty()) {
-            throw new NotFoundException("Course not found");
+            throw new NotFoundException("Error: Course not found");
         }
         return courseModelOptional;
     }

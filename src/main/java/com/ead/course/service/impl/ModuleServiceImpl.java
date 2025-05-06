@@ -57,7 +57,7 @@ public class ModuleServiceImpl implements ModuleService {
     public Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId) {
         Optional<ModuleModel> moduleModelOptional = moduleRepository.findModuleIntoCourse(courseId, moduleId);
         if (moduleModelOptional.isEmpty()) {
-            throw new NotFoundException("Module not found");
+            throw new NotFoundException("Error: Module not found for this course");
         }
         return moduleModelOptional;
     }
@@ -72,7 +72,7 @@ public class ModuleServiceImpl implements ModuleService {
     public Optional<ModuleModel> findById(UUID moduleId) {
         var moduleModelOptional = moduleRepository.findById(moduleId);
         if (moduleModelOptional.isEmpty()) {
-            throw new NotFoundException("Module not found");
+            throw new NotFoundException("Error: Module not found");
         }
         return moduleModelOptional;
     }
