@@ -7,6 +7,9 @@ import com.ead.course.model.ModuleModel;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.service.LessonService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,5 +59,10 @@ public class LessonServiceImpl implements LessonService {
     public LessonModel update(LessonRecordDto lessonRecordDto, LessonModel lessonModel) {
         BeanUtils.copyProperties(lessonRecordDto, lessonModel);
         return lessonRepository.save(lessonModel);
+    }
+
+    @Override
+    public Page<LessonModel> findAllLessonsIntoModule(Specification<LessonModel> spec, Pageable pageable) {
+        return lessonRepository.findAll(spec, pageable);
     }
 }

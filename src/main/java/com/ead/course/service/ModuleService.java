@@ -4,6 +4,9 @@ import com.ead.course.dtos.ModuleRecordDto;
 import com.ead.course.model.CourseModel;
 import com.ead.course.model.ModuleModel;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +24,6 @@ public interface ModuleService {
     ModuleModel update(ModuleRecordDto moduleRecordDto, ModuleModel moduleModel);
 
     Optional<ModuleModel> findById(UUID moduleId);
+
+    Page<ModuleModel> findAllModulesIntoCourse(Specification<ModuleModel> spec, Pageable page);
 }

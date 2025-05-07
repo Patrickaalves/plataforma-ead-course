@@ -2,8 +2,10 @@ package com.ead.course.service;
 
 import com.ead.course.dtos.CourseRecordDto;
 import com.ead.course.model.CourseModel;
-import com.ead.course.model.ModuleModel;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +23,6 @@ public interface CourseService {
     Optional<CourseModel> findById(UUID id);
 
     CourseModel update(@Valid CourseRecordDto courseRecordDto, CourseModel courseModel);
+
+    Page<CourseModel> findAll(Specification<CourseModel> spec, Pageable pageable);
 }
