@@ -59,5 +59,14 @@ public class SpecificationTemplate {
             ));
         };
     }
+
+    public static Specification<LessonModel> teste() {
+        return (root, query, cb) -> {
+
+          return cb.and(
+
+          );
+        };
+    }
 }
 
