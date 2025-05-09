@@ -1,10 +1,13 @@
 package com.ead.course.controllers;
 
 import com.ead.course.dtos.CourseRecordDto;
+import com.ead.course.exceptions.GlobalExceptionHandler;
 import com.ead.course.model.CourseModel;
 import com.ead.course.service.CourseService;
 import com.ead.course.specifications.SpecificationTemplate;
 import jakarta.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
+
+    Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+
     final CourseService courseService;
 
     public CourseController(CourseService courseService) {
@@ -25,7 +31,9 @@ public class CourseController {
 
     @PostMapping
     public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseRecordDto courseRecordDto) {
+        logger.debug("POST saveCourse courseRecordDto received {}", courseRecordDto.toString());
         if (courseService.existsByName(courseRecordDto.name())) {
+            logger.warn("Course with name {} already exists", courseRecordDto.name());
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Name is already taken");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(courseService.save(courseRecordDto));
@@ -43,6 +51,7 @@ public class CourseController {
 
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId") UUID courseId) {
+        logger.debug("DELETE deleteCourse courseId {}", courseId);
         courseService.delete(courseService.findById(courseId).get());
         return ResponseEntity.status(HttpStatus.OK).body("Course deleted successfully");
     }
@@ -50,6 +59,7 @@ public class CourseController {
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId") UUID courseId,
                                                @RequestBody @Valid CourseRecordDto courseRecordDto) {
+        logger.debug("PUT updateCourse courseRecordDto {}", courseRecordDto);
         return ResponseEntity.status(HttpStatus.OK).body(courseService.update(courseRecordDto, courseService.findById(courseId).get()));
     }
 }
