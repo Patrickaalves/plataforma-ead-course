@@ -24,7 +24,7 @@ public class CourseUserModel implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private CourseModel course;
-    //@JoinColumn(name = "course_id")
+    //@JoinColumn(name = "course_id") // setar o nome da coluna manualmente
     public UUID getId() {
         return id;
     }
