@@ -1,7 +1,7 @@
 package com.ead.course.clients;
 
-import com.ead.course.dtos.ResponsePageDto;
-import com.ead.course.dtos.UserRecordDto;
+import com.ead.course.dtos.request.ResponsePageDto;
+import com.ead.course.dtos.request.UserRecordDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;

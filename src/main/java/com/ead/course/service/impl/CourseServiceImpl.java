@@ -1,6 +1,6 @@
 package com.ead.course.service.impl;
 
-import com.ead.course.dtos.CourseRecordDto;
+import com.ead.course.dtos.response.CourseRecordDto;
 import com.ead.course.exceptions.NotFoundException;
 import com.ead.course.model.CourseModel;
 import com.ead.course.model.LessonModel;
@@ -9,7 +9,6 @@ import com.ead.course.repositories.CourseRepository;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.service.CourseService;
-import com.ead.course.specifications.SpecificationTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

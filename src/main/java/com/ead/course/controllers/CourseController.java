@@ -1,6 +1,6 @@
 package com.ead.course.controllers;
 
-import com.ead.course.dtos.CourseRecordDto;
+import com.ead.course.dtos.response.CourseRecordDto;
 import com.ead.course.exceptions.GlobalExceptionHandler;
 import com.ead.course.model.CourseModel;
 import com.ead.course.service.CourseService;

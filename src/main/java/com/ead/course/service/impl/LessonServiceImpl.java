@@ -1,6 +1,6 @@
 package com.ead.course.service.impl;
 
-import com.ead.course.dtos.LessonRecordDto;
+import com.ead.course.dtos.response.LessonRecordDto;
 import com.ead.course.exceptions.NotFoundException;
 import com.ead.course.model.LessonModel;
 import com.ead.course.model.ModuleModel;

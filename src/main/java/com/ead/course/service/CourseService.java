@@ -1,6 +1,6 @@
 package com.ead.course.service;
 
-import com.ead.course.dtos.CourseRecordDto;
+import com.ead.course.dtos.response.CourseRecordDto;
 import com.ead.course.model.CourseModel;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

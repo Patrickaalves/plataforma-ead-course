@@ -1,4 +1,4 @@
-package com.ead.course.dtos;
+package com.ead.course.dtos.response;
 
 import jakarta.validation.constraints.NotBlank;
 

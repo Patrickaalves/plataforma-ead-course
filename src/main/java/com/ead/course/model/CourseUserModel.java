@@ -15,6 +15,14 @@ public class CourseUserModel implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    public CourseUserModel() {}
+
+    public CourseUserModel(UUID id, UUID userId, CourseModel course) {
+        this.id = id;
+        this.userId = userId;
+        this.course = course;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -24,6 +32,7 @@ public class CourseUserModel implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private CourseModel course;
+
     //@JoinColumn(name = "course_id") // setar o nome da coluna manualmente
     public UUID getId() {
         return id;

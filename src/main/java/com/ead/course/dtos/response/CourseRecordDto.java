@@ -1,4 +1,4 @@
-package com.ead.course.dtos;
+package com.ead.course.dtos.response;
 
 import com.ead.course.enums.CourseLevel;
 import com.ead.course.enums.CourseStatus;
