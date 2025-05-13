@@ -1,8 +1,8 @@
 package com.ead.course.controllers;
 
 import com.ead.course.clients.AuthUserClient;
-import com.ead.course.dtos.response.SubscriptionRecordDto;
 import com.ead.course.dtos.request.UserRecordDto;
+import com.ead.course.dtos.response.SubscriptionRecordDto;
 import com.ead.course.enums.UserStatus;
 import com.ead.course.model.CourseModel;
 import com.ead.course.model.CourseUserModel;
@@ -34,9 +34,10 @@ public class CourseUserController {
     }
 
     @GetMapping("/courses/{courseId}/users")
-    public ResponseEntity<Page<UserRecordDto>> getAllUsersByCourse(@PathVariable(value = "courseId") UUID userId,
+    public ResponseEntity<Page<UserRecordDto>> getAllUsersByCourse(@PathVariable(value = "courseId") UUID courseId,
                                                                    @PageableDefault(sort = "userId", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(authUserClient.getAllUsersByCourse(userId, pageable));
+        courseService.findById(courseId);
+        return ResponseEntity.status(HttpStatus.OK).body(authUserClient.getAllUsersByCourse(courseId, pageable));
     }
 
     @PostMapping("/courses/{courseId}/users/subscription")
@@ -56,5 +57,14 @@ public class CourseUserController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                              .body(courseUserService.saveAndSendSubscriptionUserInCourse(courseModelOptional.get().convertToCourseUserModel(subscriptionRecordDto.userId())));
+    }
+
+    @DeleteMapping("/courses/users/{userId}")
+    public ResponseEntity<Object> deleteCourseUserByUser(@PathVariable(value = "userId") UUID userId) {
+        if (!courseUserService.existByUserId(userId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CourseUser Not Found");
+        }
+        courseUserService.deleteAllByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body("CourseUser deleted successfully");
     }
 }
