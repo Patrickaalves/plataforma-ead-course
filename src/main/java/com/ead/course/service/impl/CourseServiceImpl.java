@@ -1,14 +1,11 @@
 package com.ead.course.service.impl;
 
-import com.ead.course.clients.AuthUserClient;
 import com.ead.course.dtos.response.CourseRecordDto;
 import com.ead.course.exceptions.NotFoundException;
 import com.ead.course.model.CourseModel;
-import com.ead.course.model.CourseUserModel;
 import com.ead.course.model.LessonModel;
 import com.ead.course.model.ModuleModel;
 import com.ead.course.repositories.CourseRepository;
-import com.ead.course.repositories.CourseUserRepository;
 import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.service.CourseService;
@@ -31,21 +28,16 @@ public class CourseServiceImpl implements CourseService {
     final CourseRepository courseRepository;
     final ModuleRepository moduleRepository;
     final LessonRepository lessonRepository;
-    final CourseUserRepository courseUserRepository;
-    private final AuthUserClient authUserClient;
 
-    public CourseServiceImpl(CourseRepository courseRepository, ModuleRepository moduleRepository, LessonRepository lessonRepository, CourseUserRepository courseUserRepository, AuthUserClient authUserClient) {
+    public CourseServiceImpl(CourseRepository courseRepository, ModuleRepository moduleRepository, LessonRepository lessonRepository) {
         this.courseRepository = courseRepository;
         this.moduleRepository = moduleRepository;
         this.lessonRepository = lessonRepository;
-        this.courseUserRepository = courseUserRepository;
-        this.authUserClient = authUserClient;
     }
 
     @Transactional
     @Override
     public void delete(CourseModel courseModel) {
-        boolean deleteCourseUserInAuthUser = false;
         List<ModuleModel> moduleModelList = moduleRepository.findAllModulesIntoCourse(courseModel.getCourseId());
         if(!moduleModelList.isEmpty()){
             for (ModuleModel module : moduleModelList) {
@@ -56,15 +48,8 @@ public class CourseServiceImpl implements CourseService {
             }
             moduleRepository.deleteAll(moduleModelList);
         }
-        List<CourseUserModel> courseUserModelList = courseUserRepository.findAllCourseUserIntoCourse(courseModel.getCourseId());
-        if (!courseUserModelList.isEmpty()){
-            courseUserRepository.deleteAll(courseUserModelList);
-            deleteCourseUserInAuthUser = true;
-        }
         courseRepository.delete(courseModel);
-        if (deleteCourseUserInAuthUser){
-            authUserClient.deleteCourseUserInAuthUser(courseModel.getCourseId());
-        }
+
     }
 
     @Override
