@@ -58,6 +58,13 @@ public class CourseModel implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private Set<ModuleModel> modules;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "TB_COURSES_USERS",
+                joinColumns = @JoinColumn(name = "course_id"),
+                inverseJoinColumns = @JoinColumn(name = "user_id"))
+    Set<UserModel> users;
+
     public UUID getCourseId() {
         return courseId;
     }
@@ -136,5 +143,13 @@ public class CourseModel implements Serializable {
 
     public void setModules(Set<ModuleModel> modules) {
         this.modules = modules;
+    }
+
+    public Set<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserModel> users) {
+        this.users = users;
     }
 }

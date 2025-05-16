@@ -3,10 +3,12 @@ package com.ead.course.specifications;
 import com.ead.course.model.CourseModel;
 import com.ead.course.model.LessonModel;
 import com.ead.course.model.ModuleModel;
+import com.ead.course.model.UserModel;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -35,6 +37,14 @@ public class SpecificationTemplate {
     })
     public interface LessonSpec extends Specification<LessonModel> {}
 
+    @And({
+        @Spec(path = "email", spec = Like.class),
+        @Spec(path = "fullName", spec = LikeIgnoreCase.class),
+        @Spec(path = "userStatus", spec = Equal.class),
+        @Spec(path = "userType", spec = Equal.class),
+    })
+    public interface UserSpec extends Specification<UserModel> {}
+
     public static Specification<ModuleModel> moduleCourseId(final UUID courseId) {
         return (root, query, cb) -> {
             query.distinct(true);
@@ -61,33 +71,26 @@ public class SpecificationTemplate {
     }
 
     public static Specification<CourseModel> courseUserId(final UUID userId) {
-//        return (root, query, cb) -> {
-//            query.distinct(true);
-//            Join<CourseModel, CourseUserModel> courseUser = root.join("courseUsers");
-//            return cb.equal(courseUser.get("userId"), userId);
-//        };
-        return null;
+        return (root, query, cb) -> {
+            query.distinct(true);
+            Root<UserModel> user = query.from(UserModel.class);
+            Expression<Collection<CourseModel>> usersCourses = user.get("courses");
+            return cb.and(
+                    cb.equal(user.get("userId"), userId),
+                    cb.isMember(root, usersCourses)
+            );
+        };
     }
 
-    public static Specification<LessonModel> teste() {
+    public static Specification<UserModel> userCourseId(final UUID courseId) {
         return (root, query, cb) -> {
-
-        String title = "teste";
-        String description = "description";
-
-        // select * from module
-        Root<ModuleModel> module = query.from(ModuleModel.class);
-
-        // prepare WHERE clause
-        // WHERE firstname like '%ali%'
-        Predicate firstNamePredicate = cb.like(module.get("title"), "%" + title + "%");
-        Predicate lastNamePredicate = cb.like(module.get("name"), "%" + description + "%");
-        Predicate orPredicate = cb.or(firstNamePredicate, lastNamePredicate);
-        // => final query ==> select * from module where title like '%teste%' or lastname like '%description%'
-
-        query.where(orPredicate);
-
-        return null;
+            query.distinct(true);
+            Root<CourseModel> course = query.from(CourseModel.class);
+            Expression<Collection<UserModel>> courseUsers = course.get("users");
+            return cb.and(
+                    cb.equal(course.get("courseId"), courseId),
+                    cb.isMember(root, courseUsers)
+            );
         };
     }
 }
